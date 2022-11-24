@@ -7,3 +7,5 @@ class Settings:
         self.count_space = 0
         self.file = open("time_code.txt", "w")
         self.start = 0
+
+        self.sentence = ""

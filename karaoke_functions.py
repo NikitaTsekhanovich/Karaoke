@@ -3,6 +3,7 @@ import time
 import pygame
 import sys
 import pyglet
+import speech_recognition
 
 
 def check_events(ai_settings, program):
@@ -40,6 +41,31 @@ def play_song(song):
     pyglet.app.run()
 
 
-def update_screen(screen, text, x, y):
-    screen.blit(text, (x, y))
+def get_voice_reading(ai_settings):
+    try:
+        print("Зашел!")
+        sr = speech_recognition.Recognizer()
+        # sr.pause_threshold = 0.1
+        with speech_recognition.Microphone() as mic:
+                sr.adjust_for_ambient_noise(source=mic)
+                audio = sr.listen(source=mic)
+                query = sr.recognize_google(audio_data=audio, language='ru-RU').lower()
+                ai_settings.sentence = query
+                # print(f"In therds: {ai_settings.sentence}")
+                return ai_settings.sentence
+    except speech_recognition.UnknownValueError:
+        ai_settings.sentence = 'Не молчи!'
+        # print('Не молчи!')
+        return
+
+
+def update_screen(screen, text_song, text_x, text_y, background,
+                  text_voice, text_voice_x, text_voice_y, is_text_voice):
+    background.draw()
+
+    if text_song is not None and is_text_voice:
+        screen.blit(text_song, (text_x, text_y))
+    if is_text_voice:
+        screen.blit(text_voice, (text_voice_x, text_voice_y))
+
     pygame.display.flip()

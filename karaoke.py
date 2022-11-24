@@ -2,6 +2,7 @@ import pygame
 import time
 import karaoke_functions as kf
 from settings import Settings
+from background import Background
 import codecs
 import threading
 
@@ -12,13 +13,12 @@ def main(run, program, name_song, extension):
     ai_settings = Settings()
     screen = pygame.display.set_mode(
         (ai_settings.screen_width, ai_settings.screen_height))
+    background = Background(screen)
     pygame.display.set_caption("Karaoke")
-    text = pygame.font.Font(None, 36)\
-        .render('Караоке у Никиты', False, (255, 255, 255))
 
     if program == "Create song":
         while run:
-            kf.update_screen(screen, text, 10, 100)
+            kf.update_screen(screen, None, 10, 100, background, None, None, None, False)
             kf.check_events(ai_settings, "Create song")
     else:
         while run:
@@ -30,17 +30,31 @@ def main(run, program, name_song, extension):
             arr_file_text_song = file_text_song.read().split("\n")
             rows = 0
             len_song = 0
+            score = 0
             play_music = threading.Thread(target=kf.play_song, args=(f"songs/{name_song}{extension}",))
             play_music.start()
-            kf.update_screen(screen, text, 10, 100)
+            kf.update_screen(screen, None, 10, 100, background, None, None, None, False)
             for line_delay in range(0, count_rows - 1):
                 time.sleep(float(arr_file_line_delay[line_delay]))
+                if line_delay != 0:
+                    voice = threading.Thread(target=kf.get_voice_reading, args=(ai_settings,))
+                    voice.start()
+                    # print(f"Not threads: {ai_settings.sentence}")
+                    a = ai_settings.sentence.replace(" ", "")
+                    b = arr_file_text_song[rows - 1].lower().replace(",", "").replace(" ", "")
+                    if (ai_settings.sentence.replace(" ", "") ==
+                            arr_file_text_song[rows - 1].lower().replace(",", "").replace(" ", "")):
+                        score += 1
+                        print(score)
+                    print(f'{a}\n', b)
+                    print(a == b)
                 len_song += float(arr_file_line_delay[line_delay])
-                print(arr_file_text_song[rows])
-                text_song = pygame.font.Font(None, 24) \
+                text_voice = pygame.font.Font(None, 20) \
+                    .render(ai_settings.sentence, True, (200, 200, 200))
+                text_song = pygame.font.Font(None, 20) \
                     .render(arr_file_text_song[rows], True, (255, 255, 255))
                 kf.update_screen(pygame.display.set_mode((ai_settings.screen_width, ai_settings.screen_height)),
-                                 text_song, 10, 200)
+                                 text_song, 60, 355, background, text_voice, 60, 380, True)
                 rows += 1
             print(len_song)
             print("End")
