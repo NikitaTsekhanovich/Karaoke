@@ -24,20 +24,25 @@ def choose_song():
     menu = pygame_menu.Menu('', 480, 416, theme=main_theme)
     menu.add.button('song: 7Б', start_karaoke_7B)
     menu.add.button('song: Mnogoznaal', start_karaoke_Mnogoznaal)
+    menu.add.button('song: Тест Дай мне собраться', start_test)
     menu.add.button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(screen)
 
 
+def start_test():
+    karaoke.main("Karaoke", "ДайМне", ".mp3")
+
+
 def start_karaoke_7B():
-    karaoke.main(True, "Karaoke", "7Б", ".mp3")
+    karaoke.main("Karaoke", "7Б", ".mp3")
 
 
 def start_karaoke_Mnogoznaal():
-    karaoke.main(True, "Karaoke", "Mnogoznaal", ".mp3")
+    karaoke.main("Karaoke", "Mnogoznaal", ".mp3")
 
 
 def start_create_song():
-    karaoke.main(True, "Create song", None, None)
+    karaoke.main("Create song", None, None)
 
 
 if __name__ == "__main__":
