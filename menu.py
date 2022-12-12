@@ -1,6 +1,8 @@
 import pygame
 import pygame_menu
 import karaoke
+import os
+import re
 
 
 def Menu():
@@ -22,23 +24,16 @@ def choose_song():
     main_theme = pygame_menu.themes.THEME_DARK.copy()
     main_theme.set_background_color_opacity(0.0)
     menu = pygame_menu.Menu('', 480, 416, theme=main_theme)
-    menu.add.button('song: 7Б', start_karaoke_7B)
-    menu.add.button('song: Mnogoznaal', start_karaoke_Mnogoznaal)
-    menu.add.button('song: Тест Дай мне собраться', start_test)
+    songs = os.scandir(r"C:\Users\honor\source\repos\Karaoke\songs")
+    for song in songs:
+        menu.add.selector('Song:', [(song.name, song.name)], onchange=start_karaoke)
     menu.add.button('Quit', pygame_menu.events.EXIT)
     menu.mainloop(screen)
 
 
-def start_test():
-    karaoke.main("Karaoke", "ДайМне", ".mp3")
-
-
-def start_karaoke_7B():
-    karaoke.main("Karaoke", "7Б", ".mp3")
-
-
-def start_karaoke_Mnogoznaal():
-    karaoke.main("Karaoke", "Mnogoznaal", ".mp3")
+def start_karaoke(value, song_with_extension):
+    song = re.search(r'.+[.]', song_with_extension).group()[:-1]
+    karaoke.main("Karaoke", song, ".mp3")
 
 
 def start_create_song():
