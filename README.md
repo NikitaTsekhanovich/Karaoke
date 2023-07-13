@@ -5,6 +5,12 @@
 Приложение включает в себя караоке и вспомогательное под приложение, с помощью которого можно 
 устанавливать тайм коды на предложениях в песне.
 
+### Скриншоты
+
+![image](https://github.com/NikitaTsekhanovich/Karaoke/assets/92225631/b8992979-a505-41b8-a4fa-7d44b4555885)
+![image](https://github.com/NikitaTsekhanovich/Karaoke/assets/92225631/f6ebfafd-47d8-417e-8294-ab2af84193b1)
+![image](https://github.com/NikitaTsekhanovich/Karaoke/assets/92225631/8a194712-9a7b-49e2-825c-4814509bf971)
+
 Запуск караоке.
 Запустить menu.py, после чего нажать на кнопку "Karaoke" (ЛКМ),
 далее можно выбрать песни.
